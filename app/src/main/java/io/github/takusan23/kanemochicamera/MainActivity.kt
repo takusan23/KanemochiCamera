@@ -13,9 +13,11 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.provider.MediaStore
+import android.util.Rational
 import android.util.Size
 import android.view.PixelCopy
 import android.view.Surface
+import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.Toast
@@ -47,6 +49,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        supportActionBar?.hide()
 
         pref_setting = PreferenceManager.getDefaultSharedPreferences(this)
 
@@ -90,6 +94,49 @@ class MainActivity : AppCompatActivity() {
             startCamera()
         }
 
+        //クリックイベント初期化
+        initBBSizeChangeButton()
+
+
+    }
+
+    fun initBBSizeChangeButton() {
+        //倍率
+        val zoomValue = pref_setting.getString("size_value", "5")?.toInt() ?: 5
+
+        //素材の大きさ調整
+        size_add_button.setOnClickListener {
+            bb_canvas.apply {
+                bitmapHeight += bitmapAspectHeight * zoomValue
+                bitmapWidth += bitmapAspectWidth * zoomValue
+                bitmap = Bitmap.createScaledBitmap(bitmap!!, bitmapWidth, bitmapHeight, false)
+                invalidate()
+            }
+        }
+        size_remove_button.setOnClickListener {
+            bb_canvas.apply {
+                bitmapHeight -= bitmapAspectHeight * zoomValue
+                bitmapWidth -= bitmapAspectWidth * zoomValue
+                bitmap = Bitmap.createScaledBitmap(bitmap!!, bitmapWidth, bitmapHeight, false)
+                invalidate()
+            }
+        }
+        size_value_button.setOnClickListener {
+            //EditText
+            val editText = EditText(this)
+            //ダイアログ
+            val dialog = AlertDialog.Builder(this)
+                .setTitle("拡大、縮小の倍率設定。\n素材が荒くなるときは使ってみてください。")
+                .setView(editText)
+                .setNegativeButton("キャンセル") { dialogInterface: DialogInterface, i: Int -> dialogInterface.dismiss() }
+                .setPositiveButton("設定") { dialogInterface: DialogInterface, i: Int ->
+                    val editor = pref_setting.edit()
+                    editor.putString("size_value", editText.text.toString())
+                    editor.apply()
+                }
+            dialog.show()
+        }
+
     }
 
     private fun startCamera() {
@@ -98,6 +145,7 @@ class MainActivity : AppCompatActivity() {
         val previewConfig = PreviewConfig.Builder().apply {
             setTargetResolution(Size(textureView.width, textureView.height))
             setTargetRotation(windowManager.defaultDisplay.rotation)
+            setTargetAspectRatio(Rational(9, 16))   //アスペクト比
         }.build()
 
         // Build the viewfinder use case
@@ -147,7 +195,7 @@ class MainActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK && requestCode == imageOpenCode) {
-            val imageUri = data?.getData()
+            val imageUri = data?.data
             if (imageUri != null) {
 /*
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
@@ -160,15 +208,18 @@ class MainActivity : AppCompatActivity() {
 
                 bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, imageUri)
 
-
-                //透明化実行
-                imageView.setImageBitmap(
-                    replaceColor(
-                        bitmap,
-                        Color.parseColor(pref_setting.getString("target_color", "#0000ff")),
-                        Color.TRANSPARENT
-                    )
+                //Canvasに描画
+                bb_canvas.bitmap = replaceColor(
+                    bitmap,
+                    Color.parseColor(pref_setting.getString("target_color", "#ffffff")),
+                    Color.TRANSPARENT
                 )
+                //Bitmap大きさ
+                bb_canvas.getBitmapSizeToValue()
+                //Bitmapアスペクト比計算
+                bb_canvas.calcAspect()
+                //再描画
+                bb_canvas.invalidate()
 
                 false
             }
@@ -204,7 +255,12 @@ class MainActivity : AppCompatActivity() {
                                 file.outputStream()
                             )
 
-                            Snackbar.make(imageView, "成功しました", Snackbar.LENGTH_SHORT).show()
+                            Snackbar.make(
+                                button_horizonal_scrollview,
+                                "成功しました",
+                                Snackbar.LENGTH_SHORT
+                            ).setAnchorView(button_horizonal_scrollview).show()
+
 
                         } else {
                             Toast.makeText(this, "問題が発生しました", Toast.LENGTH_SHORT).show()
@@ -241,10 +297,7 @@ class MainActivity : AppCompatActivity() {
 
     //置き換える
 //https://stackoverflow.com/questions/7237915/replace-black-color-in-bitmap-with-red
-    fun replaceColor(src: Bitmap?, fromColor: Int, targetColor: Int): Bitmap? {
-        if (src == null) {
-            return null
-        }
+    fun replaceColor(src: Bitmap, fromColor: Int, targetColor: Int): Bitmap {
         // Source image size
         val width = src.width
         val height = src.height

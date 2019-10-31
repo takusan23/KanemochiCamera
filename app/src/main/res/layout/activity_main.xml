@@ -15,48 +15,84 @@
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
 
             <TextureView
                 android:id="@+id/textureView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
-            <ImageView
-                android:id="@+id/imageView"
+            <io.github.takusan23.kanemochicamera.BBCanvas
+                android:id="@+id/bb_canvas"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
+
         </FrameLayout>
 
+        <HorizontalScrollView
+            android:id="@+id/button_horizonal_scrollview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/select_img_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:text="画像選択" />
+
+                <Button
+                    android:id="@+id/take_picture_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:text="撮影" />
+
+                <Button
+                    android:id="@+id/select_color_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:text="透過色" />
+
+                <Button
+                    android:id="@+id/size_add_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:text="サイズ+" />
+
+                <Button
+                    android:id="@+id/size_remove_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:text="サイズ-" />
+
+                <Button
+                    android:id="@+id/size_value_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:text="倍率設定" />
+
+
+            </LinearLayout>
+        </HorizontalScrollView>
+
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/select_img_button"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="5dp"
-            android:layout_weight="1"
-            android:text="画像選択" />
-
-        <Button
-            android:id="@+id/take_picture_button"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="5dp"
-            android:layout_weight="1"
-            android:text="撮影" />
-
-        <Button
-            android:id="@+id/select_color_button"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="5dp"
-            android:layout_weight="1"
-            android:text="色選択" />
-    </LinearLayout>
 </LinearLayout>
