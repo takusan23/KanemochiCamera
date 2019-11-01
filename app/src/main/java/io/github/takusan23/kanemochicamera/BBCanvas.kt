@@ -20,13 +20,19 @@ class BBCanvas(context: Context?, attrs: AttributeSet?) : View(context, attrs) {
     //めんどいのでBB素材一個だけな
     var xPos = 200F
     var yPos = 200F
+    //Bitmap / Paint
     var bitmap: Bitmap? = null
+    var paint = Paint()
     //Bitmapの大きさ
     var bitmapWidth = 100
     var bitmapHeight = 100
     //Bitmapのアスペクト比
     var bitmapAspectHeight = 16
     var bitmapAspectWidth = 9
+
+    //タッチイベントを通すか
+    //複数重ねるときに使ってね
+    var isTouchEvent = true
 
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
@@ -41,24 +47,27 @@ class BBCanvas(context: Context?, attrs: AttributeSet?) : View(context, attrs) {
             val heightCenter = bitmap?.height?.div(2) ?: 0
             //val bitmap = bbListBitmap[i]
             // val paint = bbListPaint[i]
-            canvas?.drawBitmap(bitmap!!, xPos - widthCenter, yPos - heightCenter, Paint())
+            canvas?.drawBitmap(bitmap!!, xPos - widthCenter, yPos - heightCenter, paint)
         }
 
     }
 
+    //最大公約数
     fun gcd(x: Int, y: Int): Int {
         if (y == 0) return x
         return gcd(y, x % y)
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
-        when (event?.action) {
-            MotionEvent.ACTION_MOVE -> {
-                xPos = event.x
-                yPos = event.y
-                invalidate()
+        //if (isTouchEvent) {
+            when (event?.action) {
+                MotionEvent.ACTION_MOVE -> {
+                    xPos = event.x
+                    yPos = event.y
+                    invalidate()
+                }
             }
-        }
+      //  }
         return true
     }
 

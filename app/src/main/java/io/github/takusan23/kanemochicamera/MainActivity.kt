@@ -46,11 +46,20 @@ class MainActivity : AppCompatActivity() {
     lateinit var textureBitmap: Bitmap
     lateinit var bbBitmap: Bitmap
 
+    //素材の配列
+    val bbList = arrayListOf<BBCanvas>()
+    //捜査中のBitmapCanvas
+    var bbCanvas:BBCanvas?=null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         supportActionBar?.hide()
+
+        //素材配列に初めのやつ入れる
+        bbList.add(bb_canvas)
+        bbCanvas = bb_canvas
 
         pref_setting = PreferenceManager.getDefaultSharedPreferences(this)
 
@@ -97,6 +106,12 @@ class MainActivity : AppCompatActivity() {
         //クリックイベント初期化
         initBBSizeChangeButton()
 
+        //レイヤー
+        layer_button.setOnClickListener {
+            val layerBottomSheetFragment = LayerBottomSheetFragment()
+            layerBottomSheetFragment.show(supportFragmentManager,"layer")
+        }
+
 
     }
 
@@ -106,7 +121,7 @@ class MainActivity : AppCompatActivity() {
 
         //素材の大きさ調整
         size_add_button.setOnClickListener {
-            bb_canvas.apply {
+            bbCanvas?.apply {
                 bitmapHeight += bitmapAspectHeight * zoomValue
                 bitmapWidth += bitmapAspectWidth * zoomValue
                 bitmap = Bitmap.createScaledBitmap(bitmap!!, bitmapWidth, bitmapHeight, false)
@@ -114,7 +129,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
         size_remove_button.setOnClickListener {
-            bb_canvas.apply {
+            bbCanvas?.apply {
                 bitmapHeight -= bitmapAspectHeight * zoomValue
                 bitmapWidth -= bitmapAspectWidth * zoomValue
                 bitmap = Bitmap.createScaledBitmap(bitmap!!, bitmapWidth, bitmapHeight, false)
@@ -209,17 +224,17 @@ class MainActivity : AppCompatActivity() {
                 bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, imageUri)
 
                 //Canvasに描画
-                bb_canvas.bitmap = replaceColor(
+                bbCanvas?.bitmap = replaceColor(
                     bitmap,
                     Color.parseColor(pref_setting.getString("target_color", "#ffffff")),
                     Color.TRANSPARENT
                 )
                 //Bitmap大きさ
-                bb_canvas.getBitmapSizeToValue()
+                bbCanvas?.getBitmapSizeToValue()
                 //Bitmapアスペクト比計算
-                bb_canvas.calcAspect()
+                bbCanvas?.calcAspect()
                 //再描画
-                bb_canvas.invalidate()
+                bbCanvas?.invalidate()
 
                 false
             }
