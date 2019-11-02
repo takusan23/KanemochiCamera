@@ -61,14 +61,14 @@ class BBCanvas(context: Context?, attrs: AttributeSet?) : View(context, attrs) {
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
         //if (isTouchEvent) {
-            when (event?.action) {
-                MotionEvent.ACTION_MOVE -> {
-                    xPos = event.x
-                    yPos = event.y
-                    invalidate()
-                }
+        when (event?.action) {
+            MotionEvent.ACTION_MOVE -> {
+                xPos = event.x
+                yPos = event.y
+                invalidate()
             }
-      //  }
+        }
+        //  }
         return true
     }
 

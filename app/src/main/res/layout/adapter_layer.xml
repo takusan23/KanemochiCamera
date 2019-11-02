@@ -46,6 +46,34 @@
             android:layout_height="match_parent"
             android:orientation="horizontal">
 
+            <Button
+                android:id="@+id/adapter_layer_copy_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="2sp"
+                android:text="コピー" />
+
+            <Button
+                android:id="@+id/adapter_layer_delete_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="2sp"
+                android:text="削除" />
+
+            <Button
+                android:id="@+id/adapter_layer_visibility_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="2sp"
+                android:text="非表示/表示" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
             <TextView
                 android:id="@+id/textView2"
                 android:layout_width="wrap_content"

@@ -106,8 +106,14 @@ class MainActivity : AppCompatActivity() {
             val layerBottomSheetFragment = LayerBottomSheetFragment()
             layerBottomSheetFragment.show(supportFragmentManager, "layer")
         }
+    }
 
-
+    //素材再設置
+    fun setBBView(){
+        bb_canvas_framelayout.removeAllViews()
+        bbList.forEach {
+            bb_canvas_framelayout.addView(it)
+        }
     }
 
     fun initBBSizeChangeButton() {

@@ -37,6 +37,9 @@ class LayerRecyclerViewAdapter(private val arrayListArrayAdapter: ArrayList<Arra
 
         pref_setting = PreferenceManager.getDefaultSharedPreferences(mainActivity)
 
+        val fragment =
+            mainActivity.supportFragmentManager.findFragmentByTag("layer") as LayerBottomSheetFragment
+
         holder.layerImageView.setImageBitmap(mainActivity.bbList[position].bitmap)
 
         holder.layerEditButton.setOnClickListener {
@@ -54,19 +57,16 @@ class LayerRecyclerViewAdapter(private val arrayListArrayAdapter: ArrayList<Arra
         //画像変更
         holder.changeImageButton.setOnClickListener {
             //Fragment取得？
-            val fragment = mainActivity.supportFragmentManager.findFragmentByTag("layer")
-            if (fragment is LayerBottomSheetFragment) {
-                //まず位置変更可能な状態へ
-                mainActivity.apply {
-                    bbCanvas = bbList[position]
-                    bbList[position].bringToFront()
-                }
-                //画像選択画面出す
-                fragment.apply {
-                    val intent = Intent(Intent.ACTION_PICK)
-                    intent.type = "image/*";
-                    startActivityForResult(intent, imageOpenCode)
-                }
+            //まず位置変更可能な状態へ
+            mainActivity.apply {
+                bbCanvas = bbList[position]
+                bbList[position].bringToFront()
+            }
+            //画像選択画面出す
+            fragment.apply {
+                val intent = Intent(Intent.ACTION_PICK)
+                intent.type = "image/*";
+                startActivityForResult(intent, imageOpenCode)
             }
         }
 
@@ -90,8 +90,49 @@ class LayerRecyclerViewAdapter(private val arrayListArrayAdapter: ArrayList<Arra
             }
         }
 
-    }
+        mainActivity.apply {
+            //コピー
+            holder.copyButton.setOnClickListener {
+                //val bbCanvas = bbList[position]
+                val bbCanvas = bbList[position]
+                val copyBBCanvas = BBCanvas(mainActivity, null)
+                //値をわたす
+                copyBBCanvas.apply {
+                    bitmap = bbCanvas.bitmap
+                    xPos = bbCanvas.xPos
+                    yPos = bbCanvas.yPos
+                    bitmapWidth = bbCanvas.bitmapWidth
+                    bitmapHeight = bbCanvas.bitmapHeight
+                    bitmapAspectHeight = bbCanvas.bitmapAspectHeight
+                    bitmapAspectWidth = bbCanvas.bitmapAspectWidth
+                }
+                bbList.add(copyBBCanvas)
+                fragment.setRecyclerViewList()
+                //Bitmap切り替える
+                setBBView()
+                this.bbCanvas = bbList[position]
+                bbList[position].bringToFront()
+            }
+            //削除
+            holder.deleteButton.setOnClickListener {
+                bbList.removeAt(position)
+                //再生成
+                fragment.setRecyclerViewList()
+                setBBView()
+            }
+            //非表示
+            holder.visibilityButton.setOnClickListener {
+                if (bbList[position].visibility == View.GONE) {
+                    bbList[position].visibility = View.VISIBLE
+                } else {
+                    bbList[position].visibility = View.GONE
+                }
+                setBBView()
+            }
 
+        }
+
+    }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
@@ -105,6 +146,10 @@ class LayerRecyclerViewAdapter(private val arrayListArrayAdapter: ArrayList<Arra
         //サイズ変更
         var sizeAddButton: Button
         var sizeMinusButton: Button
+        //コピー・削除・非表示
+        var copyButton: Button
+        var deleteButton: Button
+        var visibilityButton: Button
 
         init {
             //layerTextView = itemView.findViewById(R.id.adapter_layer_layer_textview)
@@ -115,6 +160,10 @@ class LayerRecyclerViewAdapter(private val arrayListArrayAdapter: ArrayList<Arra
 
             sizeAddButton = itemView.findViewById(R.id.adapter_layer_size_add)
             sizeMinusButton = itemView.findViewById(R.id.adapter_layer_size_minus)
+
+            copyButton = itemView.findViewById(R.id.adapter_layer_copy_button)
+            deleteButton = itemView.findViewById(R.id.adapter_layer_delete_button)
+            visibilityButton = itemView.findViewById(R.id.adapter_layer_visibility_button)
 
         }
     }
