@@ -2,6 +2,7 @@ package io.github.takusan23.kanemochicamera
 
 import android.Manifest
 import android.app.Activity
+import android.content.ContentValues
 import androidx.appcompat.app.AlertDialog
 import android.content.DialogInterface
 import android.content.Intent
@@ -9,6 +10,8 @@ import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.graphics.*
 import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.ColorDrawable
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
@@ -25,7 +28,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.CameraX
 import androidx.camera.core.Preview
 import androidx.camera.core.PreviewConfig
+import androidx.core.app.ShareCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import androidx.core.net.toUri
 import androidx.preference.PreferenceManager
 import com.google.android.material.snackbar.Snackbar
@@ -109,7 +114,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     //素材再設置
-    fun setBBView(){
+    fun setBBView() {
         bb_canvas_framelayout.removeAllViews()
         bbList.forEach {
             bb_canvas_framelayout.addView(it)
@@ -257,7 +262,11 @@ class MainActivity : AppCompatActivity() {
                                 button_horizonal_scrollview,
                                 "成功しました",
                                 Snackbar.LENGTH_SHORT
-                            ).setAnchorView(button_horizonal_scrollview).show()
+                            ).setAnchorView(button_horizonal_scrollview).setAction("写真を共有") {
+                                //File.toUriは使えない(file://から始まるので
+                                //content://から始まるUriを生成する
+                                showShareScreen(generateUri(file))
+                            }.show()
 
 
                         } else {
@@ -272,23 +281,77 @@ class MainActivity : AppCompatActivity() {
                 e.printStackTrace()
             }
         } else {
-/*
-            //今までの方法
             //PixelColor API がOreo以降じゃないと利用できないため
-            paint_view.setDrawingCacheEnabled(true);
-            paint_view.buildDrawingCache(true)
-            val bitmap = paint_view.getDrawingCache(true).copy(Bitmap.Config.RGB_565, false)
-            //nullチェック
-            val uri = bitmapToUri(bitmap)
-            if (uri != null) {
-                intent.putExtra("paint_data", true)
-                intent.putExtra("paint_uri", uri.toString())
-                //画面推移
-                startActivity(intent)
-            } else {
-                showToast(getString(R.string.paint_error_bitmap_to_uri))
+
+            //TextureViewのBitmap取得（カメラ部分
+            val textureBitmap = textureView.bitmap
+            //Bitmap合成をするので元になるBitmap作成
+            val finalBitmap = Bitmap.createBitmap(
+                textureBitmap.width,
+                textureBitmap.height,
+                Bitmap.Config.ARGB_8888
+            )
+            val canvas = Canvas(finalBitmap)
+            //背景（かめら）描画
+            canvas.drawBitmap(textureBitmap, 0F, 0F, null)
+            //素材描画
+            bbList.forEach {
+                if (it.bitmap != null) {
+                    //中心出す？
+                    //図形の中心とタッチしてるところを合わせるため
+                    val widthCenter = it.bitmap?.width?.div(2) ?: 0
+                    val heightCenter = it.bitmap?.height?.div(2) ?: 0
+                    canvas.drawBitmap(
+                        it.bitmap!!,
+                        it.xPos - widthCenter,
+                        it.yPos - heightCenter,
+                        null
+                    )
+                }
             }
-*/
+
+            //保存
+            val file =
+                File(externalMediaDirs.first(), "${System.currentTimeMillis()}.jpg")
+            finalBitmap.compress(
+                Bitmap.CompressFormat.JPEG,
+                100,
+                file.outputStream()
+            )
+
+            Snackbar.make(
+                button_horizonal_scrollview,
+                "成功しました",
+                Snackbar.LENGTH_SHORT
+            ).setAnchorView(button_horizonal_scrollview).setAction("写真を共有") {
+                //File.toUriは使えない(file://から始まるので
+                //content://から始まるUriを生成する
+                showShareScreen(generateUri(file))
+            }.show()
+
+        }
+    }
+
+    //content://なUriを生成する
+    private fun generateUri(file: File): Uri? {
+        return FileProvider.getUriForFile(
+            this,
+            BuildConfig.APPLICATION_ID + ".fileprovider",
+            file
+        )
+    }
+
+    /*
+    * 共有画面出す
+    * */
+    fun showShareScreen(uri: Uri?) {
+        val shareCompat = ShareCompat.IntentBuilder.from(this)
+        shareCompat.apply {
+            setChooserTitle("写真を共有")
+            setStream(uri)
+            setType("image/jpeg")
+            //開く
+            startChooser()
         }
     }
 
