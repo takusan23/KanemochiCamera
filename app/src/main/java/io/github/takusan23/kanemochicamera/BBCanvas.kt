@@ -32,6 +32,7 @@ class BBCanvas(context: Context?, attrs: AttributeSet?) : View(context, attrs) {
 
     //タッチイベントを通すか
     //複数重ねるときに使ってね
+    //非推奨
     var isTouchEvent = true
 
     override fun onDraw(canvas: Canvas?) {

@@ -37,6 +37,8 @@ class MainActivity : AppCompatActivity() {
 
     val imageOpenCode = 1234
 
+    val permissionResultCode = 512
+
     var targetColor = Color.BLUE
 
     lateinit var bitmap: Bitmap
@@ -49,7 +51,7 @@ class MainActivity : AppCompatActivity() {
     //素材の配列
     val bbList = arrayListOf<BBCanvas>()
     //捜査中のBitmapCanvas
-    var bbCanvas:BBCanvas?=null
+    var bbCanvas: BBCanvas? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,13 +64,6 @@ class MainActivity : AppCompatActivity() {
         bbCanvas = bb_canvas
 
         pref_setting = PreferenceManager.getDefaultSharedPreferences(this)
-
-        //画像選択
-        select_img_button.setOnClickListener {
-            val intent = Intent(Intent.ACTION_PICK)
-            intent.type = "image/*";
-            startActivityForResult(intent, imageOpenCode)
-        }
 
         select_color_button.setOnClickListener {
             //EditText
@@ -97,7 +92,7 @@ class MainActivity : AppCompatActivity() {
             ) != PackageManager.PERMISSION_GRANTED
         ) {
             //権限リクエスト
-            requestPermissions(arrayOf(Manifest.permission.CAMERA), 100)
+            requestPermissions(arrayOf(Manifest.permission.CAMERA), permissionResultCode)
         } else {
             //カメラスタート
             startCamera()
@@ -109,7 +104,7 @@ class MainActivity : AppCompatActivity() {
         //レイヤー
         layer_button.setOnClickListener {
             val layerBottomSheetFragment = LayerBottomSheetFragment()
-            layerBottomSheetFragment.show(supportFragmentManager,"layer")
+            layerBottomSheetFragment.show(supportFragmentManager, "layer")
         }
 
 
@@ -118,24 +113,7 @@ class MainActivity : AppCompatActivity() {
     fun initBBSizeChangeButton() {
         //倍率
         val zoomValue = pref_setting.getString("size_value", "5")?.toInt() ?: 5
-
-        //素材の大きさ調整
-        size_add_button.setOnClickListener {
-            bbCanvas?.apply {
-                bitmapHeight += bitmapAspectHeight * zoomValue
-                bitmapWidth += bitmapAspectWidth * zoomValue
-                bitmap = Bitmap.createScaledBitmap(bitmap!!, bitmapWidth, bitmapHeight, false)
-                invalidate()
-            }
-        }
-        size_remove_button.setOnClickListener {
-            bbCanvas?.apply {
-                bitmapHeight -= bitmapAspectHeight * zoomValue
-                bitmapWidth -= bitmapAspectWidth * zoomValue
-                bitmap = Bitmap.createScaledBitmap(bitmap!!, bitmapWidth, bitmapHeight, false)
-                invalidate()
-            }
-        }
+        //倍率変更ダイアログ
         size_value_button.setOnClickListener {
             //EditText
             val editText = EditText(this)
@@ -151,7 +129,6 @@ class MainActivity : AppCompatActivity() {
                 }
             dialog.show()
         }
-
     }
 
     private fun startCamera() {
@@ -306,6 +283,25 @@ class MainActivity : AppCompatActivity() {
                 showToast(getString(R.string.paint_error_bitmap_to_uri))
             }
 */
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == permissionResultCode) {
+            //成功？
+            //配列になってるけどこれはリクエストの時配列を使えば複数権限をリクエストできるため結果もそうなる
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                //カメラオープン
+                startCamera()
+            } else {
+                //何もできない
+                Toast.makeText(this, "権限が付与されませんでした。何もできません。", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 

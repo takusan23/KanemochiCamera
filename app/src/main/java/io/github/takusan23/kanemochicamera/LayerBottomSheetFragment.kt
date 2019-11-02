@@ -1,6 +1,10 @@
 package io.github.takusan23.kanemochicamera
 
+import android.app.Activity
+import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,21 +14,22 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.bottom_fragment_layer.*
 
-class LayerBottomSheetFragment :BottomSheetDialogFragment(){
+class LayerBottomSheetFragment : BottomSheetDialogFragment() {
 
     lateinit var mainActivity: MainActivity
 
     var recyclerViewList: ArrayList<ArrayList<*>> = arrayListOf()
-    lateinit var giftRecyclerViewAdapter: LayerRecyclerViewAdapter
+    lateinit var layerRecyclerViewAdapter: LayerRecyclerViewAdapter
     lateinit var recyclerViewLayoutManager: RecyclerView.LayoutManager
 
+    var imageOpenCode = 100
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.bottom_fragment_layer,container,false)
+        return inflater.inflate(R.layout.bottom_fragment_layer, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -35,12 +40,73 @@ class LayerBottomSheetFragment :BottomSheetDialogFragment(){
         bottom_layer_recyclerview.setHasFixedSize(true)
         val mLayoutManager = LinearLayoutManager(context)
         bottom_layer_recyclerview.layoutManager = mLayoutManager as RecyclerView.LayoutManager?
-        giftRecyclerViewAdapter = LayerRecyclerViewAdapter(recyclerViewList)
-        giftRecyclerViewAdapter.mainActivity = activity as MainActivity
-        bottom_layer_recyclerview.adapter = giftRecyclerViewAdapter
+        layerRecyclerViewAdapter = LayerRecyclerViewAdapter(recyclerViewList)
+        layerRecyclerViewAdapter.mainActivity = activity as MainActivity
+        bottom_layer_recyclerview.adapter = layerRecyclerViewAdapter
         recyclerViewLayoutManager = bottom_layer_recyclerview.layoutManager!!
 
         //RecyclerView
+        setRecyclerViewList()
+
+
+        //Canvas追加
+        bottom_layer_add_button.setOnClickListener {
+            val bbCanvas = BBCanvas(context, null)
+            //bbCanvas.isTouchEvent = false
+            mainActivity.apply {
+                //素材配列に追加
+                bbList.add(bbCanvas)
+                //Viewを全消し＋再構築
+                bb_canvas_framelayout.removeAllViews()
+                bbList.forEach {
+                    bb_canvas_framelayout.addView(it)
+                }
+                setRecyclerViewList()
+                //移動可能な状態へ
+                mainActivity.bbCanvas = bbCanvas
+                bbCanvas.bringToFront()
+            }
+            //画像選択画面出す
+            val intent = Intent(Intent.ACTION_PICK)
+            intent.type = "image/*";
+            startActivityForResult(intent, imageOpenCode)
+        }
+
+
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK && requestCode == imageOpenCode) {
+            val imageUri = data?.data
+            if (imageUri != null) {
+                mainActivity.apply {
+                    bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, imageUri)
+
+                    //Canvasに描画
+                    bbCanvas?.bitmap = replaceColor(
+                        bitmap,
+                        Color.parseColor(pref_setting.getString("target_color", "#ffffff")),
+                        Color.TRANSPARENT
+                    )
+                    //Bitmap大きさ
+                    bbCanvas?.getBitmapSizeToValue()
+                    //Bitmapアスペクト比計算
+                    bbCanvas?.calcAspect()
+                    //再描画
+                    bbCanvas?.invalidate()
+
+                    //とじる
+                    this@LayerBottomSheetFragment.dismiss()
+
+                    false
+                }
+            }
+        }
+    }
+
+    fun setRecyclerViewList() {
+        recyclerViewList.clear()
         mainActivity.apply {
             bbList.forEach {
                 //BBCanvasなViewなら
@@ -49,20 +115,8 @@ class LayerBottomSheetFragment :BottomSheetDialogFragment(){
                 item.add(bbList.indexOf(it).toString())
                 recyclerViewList.add(item)
             }
+            layerRecyclerViewAdapter.notifyDataSetChanged()
         }
-
-        //Canvas追加
-        bottom_layer_add_button.setOnClickListener {
-            val bbCanvas = BBCanvas(context,null)
-            bbCanvas.isTouchEvent=false
-            //素材配列に追加
-            mainActivity.bbList.add(bbCanvas)
-            //Viewを全消し＋再構築
-            mainActivity.bb_canvas_framelayout.removeAllViews()
-            mainActivity.bbList.forEach {
-                mainActivity.bb_canvas_framelayout.addView(it)
-            }
-        }
-
     }
+
 }

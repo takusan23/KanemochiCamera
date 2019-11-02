@@ -56,14 +56,6 @@
                     android:text="レイヤー" />
 
                 <Button
-                    android:id="@+id/select_img_button"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_margin="5dp"
-                    android:layout_weight="1"
-                    android:text="画像選択" />
-
-                <Button
                     android:id="@+id/take_picture_button"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -78,22 +70,6 @@
                     android:layout_margin="5dp"
                     android:layout_weight="1"
                     android:text="透過色" />
-
-                <Button
-                    android:id="@+id/size_add_button"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_margin="5dp"
-                    android:layout_weight="1"
-                    android:text="サイズ+" />
-
-                <Button
-                    android:id="@+id/size_remove_button"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_margin="5dp"
-                    android:layout_weight="1"
-                    android:text="サイズ-" />
 
                 <Button
                     android:id="@+id/size_value_button"
