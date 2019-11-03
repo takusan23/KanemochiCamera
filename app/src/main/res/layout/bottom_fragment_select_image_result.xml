@@ -11,13 +11,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="透明色の設定"
+        android:text="@string/transparent_color_setting"
         android:textSize="24sp" />
 
     <ImageView
         android:id="@+id/bottom_select_image_image_view"
-        android:layout_width="200sp"
-        android:layout_height="200sp"
+        android:layout_width="300sp"
+        android:layout_height="300sp"
         android:layout_gravity="center" />
 
     <LinearLayout
@@ -37,42 +37,42 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="2sp"
-                android:text="赤" />
+                android:text="@string/red" />
 
             <Button
                 android:id="@+id/bottom_select_image_color_blue_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="2sp"
-                android:text="青" />
+                android:text="@string/blue" />
 
             <Button
                 android:id="@+id/bottom_select_image_color_green_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="2sp"
-                android:text="緑" />
+                android:text="@string/green" />
 
             <Button
                 android:id="@+id/bottom_select_image_color_white_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="2sp"
-                android:text="白" />
+                android:text="@string/white" />
 
             <Button
                 android:id="@+id/bottom_select_image_color_black_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="2sp"
-                android:text="黒" />
+                android:text="@string/black" />
         </LinearLayout>
 
         <TextView
             android:id="@+id/textView4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="その他、カラーコードで" />
+            android:text="@string/select_color_code" />
 
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -82,9 +82,9 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/bottom_select_image_color_textinput"
                 android:layout_width="match_parent"
-                android:text="#ffffff"
                 android:layout_height="wrap_content"
-                android:hint="カラーコード" />
+                android:hint="@string/color_code"
+                android:text="#ffffff" />
         </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
 
@@ -92,6 +92,6 @@
         android:id="@+id/bottom_select_image_ok_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="実行" />
+        android:text="@string/ok" />
 
 </LinearLayout>

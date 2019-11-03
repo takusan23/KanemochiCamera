@@ -238,9 +238,9 @@ class MainActivity : AppCompatActivity() {
 
                             Snackbar.make(
                                 take_picture_button,
-                                "成功しました",
+                                getString(R.string.success),
                                 Snackbar.LENGTH_SHORT
-                            ).setAnchorView(take_picture_button).setAction("写真を共有") {
+                            ).setAnchorView(take_picture_button).setAction(getString(R.string.share_picture)) {
                                 //File.toUriは使えない(file://から始まるので
                                 //content://から始まるUriを生成する
                                 showShareScreen(generateUri(file))
@@ -248,7 +248,7 @@ class MainActivity : AppCompatActivity() {
 
 
                         } else {
-                            Toast.makeText(this, "問題が発生しました", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this, getString(R.string.error), Toast.LENGTH_SHORT).show()
                         }
                         // possible to handle other result codes ...
                     },
@@ -299,9 +299,9 @@ class MainActivity : AppCompatActivity() {
 
             Snackbar.make(
                 take_picture_button,
-                "成功しました",
+                getString(R.string.success),
                 Snackbar.LENGTH_SHORT
-            ).setAnchorView(take_picture_button).setAction("写真を共有") {
+            ).setAnchorView(take_picture_button).setAction(getString(R.string.share_picture)) {
                 //File.toUriは使えない(file://から始まるので
                 //content://から始まるUriを生成する
                 showShareScreen(generateUri(file))
@@ -325,7 +325,7 @@ class MainActivity : AppCompatActivity() {
     fun showShareScreen(uri: Uri?) {
         val shareCompat = ShareCompat.IntentBuilder.from(this)
         shareCompat.apply {
-            setChooserTitle("写真を共有")
+            setChooserTitle(getString(R.string.share_picture))
             setStream(uri)
             setType("image/jpeg")
             //開く
@@ -347,7 +347,7 @@ class MainActivity : AppCompatActivity() {
                 startCamera()
             } else {
                 //何もできない
-                Toast.makeText(this, "権限が付与されませんでした。何もできません。", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.permission_error), Toast.LENGTH_SHORT).show()
             }
         }
     }

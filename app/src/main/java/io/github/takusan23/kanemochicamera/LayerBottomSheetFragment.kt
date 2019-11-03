@@ -92,10 +92,10 @@ class LayerBottomSheetFragment : BottomSheetDialogFragment() {
             editText.setText(pref_setting.getString("size_value", "10"))
             //ダイアログ
             val dialog = AlertDialog.Builder(context!!)
-                .setTitle("拡大、縮小の倍率設定。\n素材が荒くなるときは使ってみてください。")
+                .setTitle("${getString(R.string.size_change_dialog_text)}\n${getString(R.string.size_change_description)}")
                 .setView(editText)
-                .setNegativeButton("キャンセル") { dialogInterface: DialogInterface, i: Int -> dialogInterface.dismiss() }
-                .setPositiveButton("設定") { dialogInterface: DialogInterface, i: Int ->
+                .setNegativeButton(getString(R.string.cancel)) { dialogInterface: DialogInterface, i: Int -> dialogInterface.dismiss() }
+                .setPositiveButton(getString(R.string.setting)) { dialogInterface: DialogInterface, i: Int ->
                     val editor = pref_setting.edit()
                     editor.putString("size_value", editText.text.toString())
                     editor.apply()

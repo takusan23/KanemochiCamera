@@ -9,8 +9,7 @@
     <ImageView
         android:id="@+id/adapter_layer_imageview"
         android:layout_width="60sp"
-        android:layout_height="60sp"
-        app:srcCompat="@mipmap/ic_launcher_round" />
+        android:layout_height="60sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -30,14 +29,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="2sp"
-                android:text="位置変更" />
+                android:text="@string/position_change" />
 
             <Button
                 android:id="@+id/adapter_layer_change_image_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="2sp"
-                android:text="素材変更" />
+                android:text="@string/photo_change" />
 
         </LinearLayout>
 
@@ -51,21 +50,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="2sp"
-                android:text="コピー" />
+                android:text="@string/copy" />
 
             <Button
                 android:id="@+id/adapter_layer_delete_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="2sp"
-                android:text="削除" />
+                android:text="@string/delete" />
 
             <Button
                 android:id="@+id/adapter_layer_visibility_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="2sp"
-                android:text="非表示/表示" />
+                android:text="@string/visibility" />
 
         </LinearLayout>
 
@@ -80,7 +79,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center_vertical"
-                android:text="サイズ変更" />
+                android:text="@string/size_change" />
 
             <Button
                 android:id="@+id/adapter_layer_size_add"

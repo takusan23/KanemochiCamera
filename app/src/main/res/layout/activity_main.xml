@@ -49,7 +49,7 @@
                 android:layout_weight="1"
                 android:drawableLeft="@drawable/ic_layers_24px"
                 android:drawableTint="#ffffff"
-                android:text="レイヤー" />
+                android:text="@string/layer" />
 
             <Button
                 android:id="@+id/take_picture_button"
@@ -59,7 +59,7 @@
                 android:layout_weight="1"
                 android:drawableLeft="@drawable/ic_camera_alt_24px"
                 android:drawableTint="#ffffff"
-                android:text="撮影" />
+                android:text="@string/take_picture" />
 
 
             <Button
@@ -70,7 +70,7 @@
                 android:layout_weight="1"
                 android:drawableLeft="@drawable/ic_flip_camera_android_24px"
                 android:drawableTint="#ffffff"
-                android:text="切り替え" />
+                android:text="@string/change_camera" />
 
 
         </LinearLayout>

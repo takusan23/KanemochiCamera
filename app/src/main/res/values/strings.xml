@@ -1,3 +1,32 @@
 <resources>
-    <string name="app_name">KanemochiCamera</string>
+    <string name="app_name">Photo composition camera</string>
+    <string name="success">Succeeded</string>
+    <string name="share_picture">Share photos</string>
+    <string name="error">There was a problem</string>
+    <string name="permission_error">Permission was not granted. I can\'t do anything.</string>
+    <string name="layer">Layer</string>
+    <string name="take_picture">photograph</string>
+    <string name="change_camera">switching</string>
+    <string name="transparent_color_setting">Transparent color setting</string>
+    <string name="red">Red</string>
+    <string name="blue">Blue</string>
+    <string name="green">Green</string>
+    <string name="white">White</string>
+    <string name="black">Black</string>
+    <string name="select_color_code">Specify by color code</string>
+    <string name="color_code">Color code</string>
+    <string name="ok">Execution</string>
+    <string name="position_change">Position change</string>
+    <string name="photo_change">Photo change</string>
+    <string name="copy">Copy</string>
+    <string name="delete">Delete</string>
+    <string name="visibility">Show / Hide</string>
+    <string name="size_change">Resize</string>
+    <string name="layer_list">List of layers</string>
+    <string name="select_magnification">magnification</string>
+    <string name="add_layer">Add layer</string>
+    <string name="size_change_dialog_text">Set magnification for enlargement and reduction.</string>
+    <string name="size_change_description">Adjust it when the material becomes rough.</string>
+    <string name="cancel">Cancel</string>
+    <string name="setting">Setting</string>
 </resources>

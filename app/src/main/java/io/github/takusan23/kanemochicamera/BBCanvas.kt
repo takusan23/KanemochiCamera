@@ -10,13 +10,6 @@ import android.view.View
 
 class BBCanvas(context: Context?, attrs: AttributeSet?) : View(context, attrs) {
 
-    val bbListBitmap = arrayListOf<Bitmap>()
-    val bbListPaint = arrayListOf<Paint>()
-
-    //Bitmapのいち
-    val bbListYPos = arrayListOf<Float>()
-    val bbListXPos = arrayListOf<Float>()
-
     //めんどいのでBB素材一個だけな
     var xPos = 200F
     var yPos = 200F
