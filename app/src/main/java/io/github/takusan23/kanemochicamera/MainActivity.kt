@@ -23,9 +23,11 @@ import android.view.Surface
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.CameraX
+import androidx.camera.core.FlashMode
 import androidx.camera.core.Preview
 import androidx.camera.core.PreviewConfig
 import androidx.core.app.ShareCompat
@@ -108,6 +110,26 @@ class MainActivity : AppCompatActivity() {
             startCamera()
         }
 
+        //ポップアップメニューを作る
+        initSettingButton()
+    }
+
+    fun initSettingButton() {
+        val popupMenu = PopupMenu(this, setting_button)
+        popupMenu.menuInflater.inflate(R.menu.main_menu, popupMenu.menu)
+        setting_button.setOnClickListener {
+            popupMenu.show()
+        }
+        popupMenu.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.main_menu_this_app -> {
+                    //このアプリについて出す
+                    val intent = Intent(this, ThisApp::class.java)
+                    startActivity(intent)
+                }
+            }
+            true
+        }
     }
 
     //素材再設置
@@ -240,15 +262,17 @@ class MainActivity : AppCompatActivity() {
                                 take_picture_button,
                                 getString(R.string.success),
                                 Snackbar.LENGTH_SHORT
-                            ).setAnchorView(take_picture_button).setAction(getString(R.string.share_picture)) {
-                                //File.toUriは使えない(file://から始まるので
-                                //content://から始まるUriを生成する
-                                showShareScreen(generateUri(file))
-                            }.show()
+                            ).setAnchorView(take_picture_button)
+                                .setAction(getString(R.string.share_picture)) {
+                                    //File.toUriは使えない(file://から始まるので
+                                    //content://から始まるUriを生成する
+                                    showShareScreen(generateUri(file))
+                                }.show()
 
 
                         } else {
-                            Toast.makeText(this, getString(R.string.error), Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this, getString(R.string.error), Toast.LENGTH_SHORT)
+                                .show()
                         }
                         // possible to handle other result codes ...
                     },
@@ -347,7 +371,8 @@ class MainActivity : AppCompatActivity() {
                 startCamera()
             } else {
                 //何もできない
-                Toast.makeText(this, getString(R.string.permission_error), Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.permission_error), Toast.LENGTH_SHORT)
+                    .show()
             }
         }
     }

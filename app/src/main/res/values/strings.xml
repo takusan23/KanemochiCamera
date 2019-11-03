@@ -29,4 +29,6 @@
     <string name="size_change_description">Adjust it when the material becomes rough.</string>
     <string name="cancel">Cancel</string>
     <string name="setting">Setting</string>
+    <string name="preview_description">You can select the transparent color by pressing the part of the image you want to transmit.</string>
+    <string name="this_app">About this app</string>
 </resources>
