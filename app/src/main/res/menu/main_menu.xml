@@ -5,5 +5,7 @@
     <item
         android:id="@+id/main_menu_licence"
         android:title="@string/licence"></item>
-
+    <item
+        android:id="@+id/main_menu_privacy_policy"
+        android:title="@string/privacy_policy"></item>
 </menu>

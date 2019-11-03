@@ -2,108 +2,122 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="10sp">
 
-    <TextView
-        android:id="@+id/textView3"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="@string/transparent_color_setting"
-        android:textSize="24sp" />
+        android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/textView5"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="@string/preview_description" />
-
-    <ImageView
-        android:id="@+id/bottom_select_image_image_view"
-        android:layout_width="300sp"
-        android:layout_height="300sp"
-        android:layout_gravity="center" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="5sp"
-        android:orientation="vertical">
-
-        <HorizontalScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/bottom_select_image_color_red_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="2sp"
-                    android:text="@string/red" />
-
-                <Button
-                    android:id="@+id/bottom_select_image_color_blue_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="2sp"
-                    android:text="@string/blue" />
-
-                <Button
-                    android:id="@+id/bottom_select_image_color_green_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="2sp"
-                    android:text="@string/green" />
-
-                <Button
-                    android:id="@+id/bottom_select_image_color_white_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="2sp"
-                    android:text="@string/white" />
-
-                <Button
-                    android:id="@+id/bottom_select_image_color_black_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="2sp"
-                    android:text="@string/black" />
-            </LinearLayout>
-        </HorizontalScrollView>
-
-        <TextView
-            android:id="@+id/textView4"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/select_color_code" />
+            android:orientation="vertical">
 
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/bottom_select_image_color_textinput"
+            <TextView
+                android:id="@+id/textView3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/color_code"
-                android:text="#ffffff" />
-        </com.google.android.material.textfield.TextInputLayout>
-    </LinearLayout>
+                android:gravity="center"
+                android:text="@string/transparent_color_setting"
+                android:textSize="24sp" />
 
-    <Button
-        android:id="@+id/bottom_select_image_ok_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/ok" />
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/preview_description" />
+
+            <ImageView
+                android:id="@+id/bottom_select_image_image_view"
+                android:layout_width="300sp"
+                android:layout_height="300sp"
+                android:layout_gravity="center" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5sp"
+                android:orientation="vertical">
+
+                <HorizontalScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/bottom_select_image_color_red_button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="2sp"
+                            android:text="@string/red" />
+
+                        <Button
+                            android:id="@+id/bottom_select_image_color_blue_button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="2sp"
+                            android:text="@string/blue" />
+
+                        <Button
+                            android:id="@+id/bottom_select_image_color_green_button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="2sp"
+                            android:text="@string/green" />
+
+                        <Button
+                            android:id="@+id/bottom_select_image_color_white_button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="2sp"
+                            android:text="@string/white" />
+
+                        <Button
+                            android:id="@+id/bottom_select_image_color_black_button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="2sp"
+                            android:text="@string/black" />
+                    </LinearLayout>
+                </HorizontalScrollView>
+
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/select_color_code" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/bottom_select_image_color_textinput"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/color_code"
+                        android:text="#ffffff" />
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/bottom_select_image_ok_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/ok" />
+
+
+        </LinearLayout>
+    </ScrollView>
+
 
 </LinearLayout>

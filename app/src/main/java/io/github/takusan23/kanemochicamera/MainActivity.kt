@@ -86,7 +86,9 @@ class MainActivity : AppCompatActivity() {
             ) != PackageManager.PERMISSION_GRANTED
         ) {
             //権限リクエスト
-            requestPermissions(arrayOf(Manifest.permission.CAMERA), permissionResultCode)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                requestPermissions(arrayOf(Manifest.permission.CAMERA), permissionResultCode)
+            }
         } else {
             //カメラスタート
             startCamera()
@@ -132,6 +134,11 @@ class MainActivity : AppCompatActivity() {
                     val intent = Intent(this, LicenceActivity::class.java)
                     startActivity(intent)
                 }
+                R.id.main_menu_privacy_policy->{
+                    val url = ""
+                    val intent = Intent(Intent.ACTION_VIEW,url.toUri())
+                    startActivity(intent)
+                }
             }
             true
         }
@@ -147,7 +154,6 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun startCamera() {
-
         // Create configuration object for the viewfinder use case
         val previewConfig = PreviewConfig.Builder().apply {
             setTargetResolution(Size(textureView.width, textureView.height))
@@ -175,7 +181,8 @@ class MainActivity : AppCompatActivity() {
         // If Android Studio complains about "this" being not a LifecycleOwner
         // try rebuilding the project or updating the appcompat dependency to
         // version 1.1.0 or higher.
-        CameraX.bindToLifecycle(this, preview)
+        CameraX.bindToLifecycle(this@MainActivity, preview)
+
     }
 
     private fun updateTransform() {

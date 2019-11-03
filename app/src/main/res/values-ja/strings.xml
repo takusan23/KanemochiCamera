@@ -32,4 +32,5 @@
     <string name="preview_description">画像の透過したい部分を押すと透過色を選べます。</string>
     <string name="this_app">このアプリについて</string>
     <string name="licence">ライセンス</string>
+    <string name="privacy_policy">プライバシーポリシー</string>
 </resources>
