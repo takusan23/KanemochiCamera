@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -17,9 +18,18 @@
             android:textSize="20sp" />
 
         <Button
+            android:id="@+id/bottom_layer_size_change_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="2sp"
+            android:layout_weight="1"
+            android:text="拡大縮小の倍率" />
+
+        <Button
             android:id="@+id/bottom_layer_add_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="2sp"
             android:text="レイヤー追加" />
     </LinearLayout>
 

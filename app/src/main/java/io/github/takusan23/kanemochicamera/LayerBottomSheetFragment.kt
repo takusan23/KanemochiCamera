@@ -1,13 +1,18 @@
 package io.github.takusan23.kanemochicamera
 
 import android.app.Activity
+import android.content.DialogInterface
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.Color
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
+import androidx.appcompat.app.AlertDialog
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -19,8 +24,11 @@ class LayerBottomSheetFragment : BottomSheetDialogFragment() {
     lateinit var mainActivity: MainActivity
 
     var recyclerViewList: ArrayList<ArrayList<*>> = arrayListOf()
+
     lateinit var layerRecyclerViewAdapter: LayerRecyclerViewAdapter
     lateinit var recyclerViewLayoutManager: RecyclerView.LayoutManager
+
+    lateinit var pref_setting: SharedPreferences
 
     var imageOpenCode = 100
 
@@ -35,6 +43,8 @@ class LayerBottomSheetFragment : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mainActivity = activity as MainActivity
+
+        pref_setting = PreferenceManager.getDefaultSharedPreferences(context)
 
         //Layer
         bottom_layer_recyclerview.setHasFixedSize(true)
@@ -66,14 +76,36 @@ class LayerBottomSheetFragment : BottomSheetDialogFragment() {
                 mainActivity.bbCanvas = bbCanvas
                 bbCanvas.bringToFront()
             }
-            //画像選択画面出す
-            val intent = Intent(Intent.ACTION_PICK)
-            intent.type = "image/*";
-            startActivityForResult(intent, imageOpenCode)
+
+            //画像編集用BottomSheetだs
+            val selectImageResultBottomSheetFragment = SelectImageResultBottomSheetFragment()
+            selectImageResultBottomSheetFragment.show(mainActivity.supportFragmentManager, "select")
+
+            //this@LayerBottomSheetFragment.dismiss()
+
+        }
+
+        //倍率設定
+        bottom_layer_size_change_button.setOnClickListener {
+            //EditText
+            val editText = EditText(context)
+            editText.setText(pref_setting.getString("size_value", "10"))
+            //ダイアログ
+            val dialog = AlertDialog.Builder(context!!)
+                .setTitle("拡大、縮小の倍率設定。\n素材が荒くなるときは使ってみてください。")
+                .setView(editText)
+                .setNegativeButton("キャンセル") { dialogInterface: DialogInterface, i: Int -> dialogInterface.dismiss() }
+                .setPositiveButton("設定") { dialogInterface: DialogInterface, i: Int ->
+                    val editor = pref_setting.edit()
+                    editor.putString("size_value", editText.text.toString())
+                    editor.apply()
+                }
+            dialog.show()
         }
 
 
     }
+
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -104,6 +136,7 @@ class LayerBottomSheetFragment : BottomSheetDialogFragment() {
             }
         }
     }
+
 
     fun setRecyclerViewList() {
         recyclerViewList.clear()

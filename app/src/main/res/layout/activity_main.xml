@@ -24,8 +24,8 @@
                 android:layout_height="wrap_content" />
 
             <FrameLayout
-                android:layout_width="match_parent"
                 android:id="@+id/bb_canvas_framelayout"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
                 <io.github.takusan23.kanemochicamera.BBCanvas
@@ -36,52 +36,44 @@
 
         </FrameLayout>
 
-        <HorizontalScrollView
-            android:id="@+id/button_horizonal_scrollview"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom">
+            android:orientation="horizontal">
 
-            <LinearLayout
-                android:layout_width="wrap_content"
+            <Button
+                android:id="@+id/layer_button"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:layout_margin="5dp"
+                android:layout_weight="1"
+                android:drawableLeft="@drawable/ic_layers_24px"
+                android:drawableTint="#ffffff"
+                android:text="レイヤー" />
 
-                <Button
-                    android:id="@+id/layer_button"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_margin="5dp"
-                    android:layout_weight="1"
-                    android:text="レイヤー" />
-
-                <Button
-                    android:id="@+id/take_picture_button"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_margin="5dp"
-                    android:layout_weight="1"
-                    android:text="撮影" />
-
-                <Button
-                    android:id="@+id/select_color_button"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_margin="5dp"
-                    android:layout_weight="1"
-                    android:text="透過色" />
-
-                <Button
-                    android:id="@+id/size_value_button"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_margin="5dp"
-                    android:layout_weight="1"
-                    android:text="倍率設定" />
+            <Button
+                android:id="@+id/take_picture_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"
+                android:layout_weight="1"
+                android:drawableLeft="@drawable/ic_camera_alt_24px"
+                android:drawableTint="#ffffff"
+                android:text="撮影" />
 
 
-            </LinearLayout>
-        </HorizontalScrollView>
+            <Button
+                android:id="@+id/camera_back_flont_change_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"
+                android:layout_weight="1"
+                android:drawableLeft="@drawable/ic_flip_camera_android_24px"
+                android:drawableTint="#ffffff"
+                android:text="切り替え" />
+
+
+        </LinearLayout>
 
     </LinearLayout>
 

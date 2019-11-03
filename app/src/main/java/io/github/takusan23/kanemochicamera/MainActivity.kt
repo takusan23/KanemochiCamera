@@ -58,6 +58,9 @@ class MainActivity : AppCompatActivity() {
     //捜査中のBitmapCanvas
     var bbCanvas: BBCanvas? = null
 
+    //外、うちカメラ
+    var cameraLends = CameraX.LensFacing.BACK
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -69,22 +72,6 @@ class MainActivity : AppCompatActivity() {
         bbCanvas = bb_canvas
 
         pref_setting = PreferenceManager.getDefaultSharedPreferences(this)
-
-        select_color_button.setOnClickListener {
-            //EditText
-            val editText = EditText(this)
-            //ダイアログ
-            val dialog = AlertDialog.Builder(this)
-                .setTitle("透過するカラーコードを入力")
-                .setView(editText)
-                .setNegativeButton("キャンセル") { dialogInterface: DialogInterface, i: Int -> dialogInterface.dismiss() }
-                .setPositiveButton("設定") { dialogInterface: DialogInterface, i: Int ->
-                    val editor = pref_setting.edit()
-                    editor.putString("target_color", editText.text.toString())
-                    editor.apply()
-                }
-            dialog.show()
-        }
 
         take_picture_button.setOnClickListener {
             getTextureViewBitmap()
@@ -103,14 +90,24 @@ class MainActivity : AppCompatActivity() {
             startCamera()
         }
 
-        //クリックイベント初期化
-        initBBSizeChangeButton()
-
         //レイヤー
         layer_button.setOnClickListener {
             val layerBottomSheetFragment = LayerBottomSheetFragment()
             layerBottomSheetFragment.show(supportFragmentManager, "layer")
         }
+
+        //カメラ切り替え
+        camera_back_flont_change_button.setOnClickListener {
+            if (cameraLends == CameraX.LensFacing.BACK) {
+                cameraLends = CameraX.LensFacing.FRONT
+            } else {
+                cameraLends = CameraX.LensFacing.BACK
+            }
+            CameraX.unbindAll()
+            //カメラ開始
+            startCamera()
+        }
+
     }
 
     //素材再設置
@@ -121,26 +118,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun initBBSizeChangeButton() {
-        //倍率
-        val zoomValue = pref_setting.getString("size_value", "5")?.toInt() ?: 5
-        //倍率変更ダイアログ
-        size_value_button.setOnClickListener {
-            //EditText
-            val editText = EditText(this)
-            //ダイアログ
-            val dialog = AlertDialog.Builder(this)
-                .setTitle("拡大、縮小の倍率設定。\n素材が荒くなるときは使ってみてください。")
-                .setView(editText)
-                .setNegativeButton("キャンセル") { dialogInterface: DialogInterface, i: Int -> dialogInterface.dismiss() }
-                .setPositiveButton("設定") { dialogInterface: DialogInterface, i: Int ->
-                    val editor = pref_setting.edit()
-                    editor.putString("size_value", editText.text.toString())
-                    editor.apply()
-                }
-            dialog.show()
-        }
-    }
 
     private fun startCamera() {
 
@@ -149,6 +126,7 @@ class MainActivity : AppCompatActivity() {
             setTargetResolution(Size(textureView.width, textureView.height))
             setTargetRotation(windowManager.defaultDisplay.rotation)
             setTargetAspectRatio(Rational(9, 16))   //アスペクト比
+            setLensFacing(cameraLends)//カメラ切り替え
         }.build()
 
         // Build the viewfinder use case
@@ -259,10 +237,10 @@ class MainActivity : AppCompatActivity() {
                             )
 
                             Snackbar.make(
-                                button_horizonal_scrollview,
+                                take_picture_button,
                                 "成功しました",
                                 Snackbar.LENGTH_SHORT
-                            ).setAnchorView(button_horizonal_scrollview).setAction("写真を共有") {
+                            ).setAnchorView(take_picture_button).setAction("写真を共有") {
                                 //File.toUriは使えない(file://から始まるので
                                 //content://から始まるUriを生成する
                                 showShareScreen(generateUri(file))
@@ -320,10 +298,10 @@ class MainActivity : AppCompatActivity() {
             )
 
             Snackbar.make(
-                button_horizonal_scrollview,
+                take_picture_button,
                 "成功しました",
                 Snackbar.LENGTH_SHORT
-            ).setAnchorView(button_horizonal_scrollview).setAction("写真を共有") {
+            ).setAnchorView(take_picture_button).setAction("写真を共有") {
                 //File.toUriは使えない(file://から始まるので
                 //content://から始まるUriを生成する
                 showShareScreen(generateUri(file))
@@ -395,4 +373,6 @@ class MainActivity : AppCompatActivity() {
 
         return result
     }
+
+
 }

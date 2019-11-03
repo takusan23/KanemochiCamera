@@ -62,12 +62,9 @@ class LayerRecyclerViewAdapter(private val arrayListArrayAdapter: ArrayList<Arra
                 bbCanvas = bbList[position]
                 bbList[position].bringToFront()
             }
-            //画像選択画面出す
-            fragment.apply {
-                val intent = Intent(Intent.ACTION_PICK)
-                intent.type = "image/*";
-                startActivityForResult(intent, imageOpenCode)
-            }
+            //画像編集用BottomSheetだs
+            val selectImageResultBottomSheetFragment = SelectImageResultBottomSheetFragment()
+            selectImageResultBottomSheetFragment.show(mainActivity.supportFragmentManager, "select")
         }
 
         //ザイズ変更
