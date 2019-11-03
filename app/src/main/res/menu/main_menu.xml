@@ -2,4 +2,8 @@
     <item
         android:id="@+id/main_menu_this_app"
         android:title="@string/this_app"></item>
+    <item
+        android:id="@+id/main_menu_licence"
+        android:title="@string/licence"></item>
+
 </menu>

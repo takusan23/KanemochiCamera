@@ -127,6 +127,11 @@ class MainActivity : AppCompatActivity() {
                     val intent = Intent(this, ThisApp::class.java)
                     startActivity(intent)
                 }
+                R.id.main_menu_licence -> {
+                    //ライセンス
+                    val intent = Intent(this, LicenceActivity::class.java)
+                    startActivity(intent)
+                }
             }
             true
         }
