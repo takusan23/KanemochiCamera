@@ -85,6 +85,23 @@ class LayerBottomSheetFragment : BottomSheetDialogFragment() {
 
         }
 
+        //ペイント出す（おえかき
+        bottom_layer_add_paint.setOnClickListener {
+            val paintCanvas = PaintCanvas(context,null)
+            mainActivity.apply {
+                //素材配列に追加
+                bbList.add(paintCanvas)
+                //Viewを全消し＋再構築
+                bb_canvas_framelayout.removeAllViews()
+                bbList.forEach {
+                    bb_canvas_framelayout.addView(it)
+                }
+                setRecyclerViewList()
+                //移動可能な状態へ
+                paintCanvas.bringToFront()
+            }
+        }
+
         //倍率設定
         bottom_layer_size_change_button.setOnClickListener {
             //EditText

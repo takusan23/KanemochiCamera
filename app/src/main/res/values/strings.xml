@@ -33,4 +33,7 @@
     <string name="this_app">About this app</string>
     <string name="licence">Licence</string>
     <string name="privacy_policy">Privacy policy</string>
+    <string name="add_paint">Add paint</string>
+    <string name="draw">To draw</string>
+    <string name="paint_back">Move back one</string>
 </resources>

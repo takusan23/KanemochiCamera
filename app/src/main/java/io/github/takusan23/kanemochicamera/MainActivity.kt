@@ -56,7 +56,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var bbBitmap: Bitmap
 
     //素材の配列
-    val bbList = arrayListOf<BBCanvas>()
+    val bbList = arrayListOf<View>()
     //捜査中のBitmapCanvas
     var bbCanvas: BBCanvas? = null
 
@@ -333,17 +333,19 @@ class MainActivity : AppCompatActivity() {
             canvas.drawBitmap(textureBitmap, 0F, 0F, null)
             //素材描画
             bbList.forEach {
-                if (it.bitmap != null) {
-                    //中心出す？
-                    //図形の中心とタッチしてるところを合わせるため
-                    val widthCenter = it.bitmap?.width?.div(2) ?: 0
-                    val heightCenter = it.bitmap?.height?.div(2) ?: 0
-                    canvas.drawBitmap(
-                        it.bitmap!!,
-                        it.xPos - widthCenter,
-                        it.yPos - heightCenter,
-                        null
-                    )
+                if(it is BBCanvas) {
+                    if (it.bitmap != null) {
+                        //中心出す？
+                        //図形の中心とタッチしてるところを合わせるため
+                        val widthCenter = it.bitmap?.width?.div(2) ?: 0
+                        val heightCenter = it.bitmap?.height?.div(2) ?: 0
+                        canvas.drawBitmap(
+                            it.bitmap!!,
+                            it.xPos - widthCenter,
+                            it.yPos - heightCenter,
+                            null
+                        )
+                    }
                 }
             }
 

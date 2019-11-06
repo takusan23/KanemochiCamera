@@ -38,6 +38,14 @@
                 android:layout_margin="2sp"
                 android:text="@string/photo_change" />
 
+            <Button
+                android:id="@+id/adapter_layer_paint_back_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="2sp"
+                android:text="@string/paint_back"
+                android:visibility="gone" />
+
         </LinearLayout>
 
         <LinearLayout

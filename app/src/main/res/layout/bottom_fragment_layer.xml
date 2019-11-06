@@ -30,11 +30,19 @@
                 android:text="@string/select_magnification" />
 
             <Button
+                android:id="@+id/bottom_layer_add_paint"
+                android:layout_margin="2sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/add_paint" />
+
+            <Button
                 android:id="@+id/bottom_layer_add_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="2sp"
                 android:text="@string/add_layer" />
+
         </LinearLayout>
 
     </LinearLayout>
