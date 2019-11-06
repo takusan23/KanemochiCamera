@@ -43,7 +43,7 @@ import java.io.File
 class MainActivity : AppCompatActivity() {
 
     val imageOpenCode = 1234
-
+    val backgroundImageCode = 2525
     val permissionResultCode = 512
 
     var targetColor = Color.BLUE
@@ -75,6 +75,7 @@ class MainActivity : AppCompatActivity() {
 
         pref_setting = PreferenceManager.getDefaultSharedPreferences(this)
 
+        //撮影ボタン
         take_picture_button.setOnClickListener {
             getTextureViewBitmap()
         }
@@ -114,6 +115,22 @@ class MainActivity : AppCompatActivity() {
 
         //ポップアップメニューを作る
         initSettingButton()
+
+        //撮影ボタン長押しで背景画像モードにできる
+        take_picture_button.setOnLongClickListener {
+            if(textureView.visibility== View.GONE){
+                //カメラ撮影モードへ
+                textureView.visibility = View.VISIBLE
+                main_activity_imageview.visibility = View.GONE
+            }else{
+                //背景モードへ
+                textureView.visibility = View.GONE
+                main_activity_imageview.visibility = View.VISIBLE
+                changeBackgroundImage()
+            }
+            false
+        }
+
     }
 
     fun initSettingButton() {
@@ -152,6 +169,15 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    //背景をカメラから画像に変える
+    //やっぱカメラは標準じゃないとねって方に
+    fun changeBackgroundImage(){
+        //ピッカー開く
+        //画像選択画面出す
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = "image/*";
+        startActivityForResult(intent, backgroundImageCode)
+    }
 
     private fun startCamera() {
         // Create configuration object for the viewfinder use case
@@ -209,36 +235,33 @@ class MainActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK && requestCode == imageOpenCode) {
-            val imageUri = data?.data
-            if (imageUri != null) {
-/*
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                    val source = ImageDecoder.createSource(this.contentResolver, imageUri)
-                    bitmap = ImageDecoder.decodeBitmap(source)
-                } else {
+        if(resultCode==Activity.RESULT_OK&&data?.data!=null){
+            val imageUri = data.data
+            when(requestCode){
+                imageOpenCode->{
                     bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, imageUri)
+
+                    //Canvasに描画
+                    bbCanvas?.bitmap = replaceColor(
+                        bitmap,
+                        Color.parseColor(pref_setting.getString("target_color", "#ffffff")),
+                        Color.TRANSPARENT
+                    )
+                    //Bitmap大きさ
+                    bbCanvas?.getBitmapSizeToValue()
+                    //Bitmapアスペクト比計算
+                    bbCanvas?.calcAspect()
+                    //再描画
+                    bbCanvas?.invalidate()
                 }
-*/
-
-                bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, imageUri)
-
-                //Canvasに描画
-                bbCanvas?.bitmap = replaceColor(
-                    bitmap,
-                    Color.parseColor(pref_setting.getString("target_color", "#ffffff")),
-                    Color.TRANSPARENT
-                )
-                //Bitmap大きさ
-                bbCanvas?.getBitmapSizeToValue()
-                //Bitmapアスペクト比計算
-                bbCanvas?.calcAspect()
-                //再描画
-                bbCanvas?.invalidate()
-
-                false
+                backgroundImageCode->{
+                    //背景モード
+                    val bitmap =  MediaStore.Images.Media.getBitmap(this.contentResolver, imageUri)
+                    main_activity_imageview.setImageBitmap(bitmap)
+                }
             }
         }
+        false
     }
 
     fun getTextureViewBitmap() {
