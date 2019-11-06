@@ -36,4 +36,5 @@
     <string name="add_paint">Add paint</string>
     <string name="draw">To draw</string>
     <string name="paint_back">Move back one</string>
+    <string name="setting_take_volume_key_down_title">Use the volume down key to release the shutter</string>
 </resources>

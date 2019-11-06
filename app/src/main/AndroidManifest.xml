@@ -3,7 +3,7 @@
     package="io.github.takusan23.kanemochicamera">
 
     <uses-permission android:name="android.permission.CAMERA" />
-        <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -12,7 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".LicenceActivity"></activity>
+        <activity android:name=".PreferenceActivity"></activity>
+        <activity android:name=".LicenceActivity" />
         <activity
             android:name=".ThisApp"
             android:label="@string/this_app" />

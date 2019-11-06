@@ -36,4 +36,5 @@
     <string name="add_paint">ペイント追加</string>
     <string name="draw">お絵描き</string>
     <string name="paint_back">1つ戻す</string>
+    <string name="setting_take_volume_key_down_title">音量ダウンキーでシャッターを切る</string>
 </resources>

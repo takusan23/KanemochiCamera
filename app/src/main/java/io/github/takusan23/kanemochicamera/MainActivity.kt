@@ -18,10 +18,7 @@ import android.os.Handler
 import android.provider.MediaStore
 import android.util.Rational
 import android.util.Size
-import android.view.PixelCopy
-import android.view.Surface
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.EditText
 import android.widget.PopupMenu
 import android.widget.Toast
@@ -118,11 +115,11 @@ class MainActivity : AppCompatActivity() {
 
         //撮影ボタン長押しで背景画像モードにできる
         take_picture_button.setOnLongClickListener {
-            if(textureView.visibility== View.GONE){
+            if (textureView.visibility == View.GONE) {
                 //カメラ撮影モードへ
                 textureView.visibility = View.VISIBLE
                 main_activity_imageview.visibility = View.GONE
-            }else{
+            } else {
                 //背景モードへ
                 textureView.visibility = View.GONE
                 main_activity_imageview.visibility = View.VISIBLE
@@ -151,9 +148,14 @@ class MainActivity : AppCompatActivity() {
                     val intent = Intent(this, LicenceActivity::class.java)
                     startActivity(intent)
                 }
-                R.id.main_menu_privacy_policy->{
+                R.id.main_menu_privacy_policy -> {
                     val url = ""
-                    val intent = Intent(Intent.ACTION_VIEW,url.toUri())
+                    val intent = Intent(Intent.ACTION_VIEW, url.toUri())
+                    startActivity(intent)
+                }
+                R.id.main_menu_settings->{
+                    //設定画面
+                    val intent = Intent(this,PreferenceActivity::class.java)
                     startActivity(intent)
                 }
             }
@@ -171,7 +173,7 @@ class MainActivity : AppCompatActivity() {
 
     //背景をカメラから画像に変える
     //やっぱカメラは標準じゃないとねって方に
-    fun changeBackgroundImage(){
+    fun changeBackgroundImage() {
         //ピッカー開く
         //画像選択画面出す
         val intent = Intent(Intent.ACTION_PICK)
@@ -235,10 +237,10 @@ class MainActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if(resultCode==Activity.RESULT_OK&&data?.data!=null){
+        if (resultCode == Activity.RESULT_OK && data?.data != null) {
             val imageUri = data.data
-            when(requestCode){
-                imageOpenCode->{
+            when (requestCode) {
+                imageOpenCode -> {
                     bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, imageUri)
 
                     //Canvasに描画
@@ -254,9 +256,9 @@ class MainActivity : AppCompatActivity() {
                     //再描画
                     bbCanvas?.invalidate()
                 }
-                backgroundImageCode->{
+                backgroundImageCode -> {
                     //背景モード
-                    val bitmap =  MediaStore.Images.Media.getBitmap(this.contentResolver, imageUri)
+                    val bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, imageUri)
                     main_activity_imageview.setImageBitmap(bitmap)
                 }
             }
@@ -333,7 +335,7 @@ class MainActivity : AppCompatActivity() {
             canvas.drawBitmap(textureBitmap, 0F, 0F, null)
             //素材描画
             bbList.forEach {
-                if(it is BBCanvas) {
+                if (it is BBCanvas) {
                     if (it.bitmap != null) {
                         //中心出す？
                         //図形の中心とタッチしてるところを合わせるため
@@ -434,6 +436,22 @@ class MainActivity : AppCompatActivity() {
         result.setPixels(pixels, 0, width, 0, 0, width, height)
 
         return result
+    }
+
+    /*
+    * 物理キーで操作。
+    * シャッターを音量下げるボタンで
+    * */
+    override fun dispatchKeyEvent(event: KeyEvent?): Boolean {
+        if (pref_setting.getBoolean("setting_take_volume_down", false)) {
+            when (event?.keyCode) {
+                KeyEvent.KEYCODE_VOLUME_DOWN -> {
+                    //シャッターを切る
+                    getTextureViewBitmap()
+                }
+            }
+        }
+        return super.dispatchKeyEvent(event)
     }
 
 
